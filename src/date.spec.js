@@ -12,6 +12,7 @@ describe('uiDate', function() {
     element.datepicker('setDate', date);
     $.datepicker._selectDate(element);
   }
+  
 
   beforeEach(module(uiDate.name));
   describe('simple use on input element', function() {
@@ -261,18 +262,57 @@ describe('uiDate', function() {
       inject(function($compile, $rootScope) {
         var aDate, element;
         aDate = new Date(2010, 12, 1);
-        element = $compile('<input ui-date ng-model="x" ng-required="true" />')($rootScope);
+        element = $compile('<input ui-date ng-model="x" ng-required="true"/>')($rootScope);
         $rootScope.$apply(function() {
           $rootScope.x = aDate;
         });
         expect(element.hasClass('ng-valid')).toBeTruthy();
+
+      });
+    });
+    it('should be valid if language has changed', function() {
+
+      inject(function($compile, $rootScope) {
+        var aDate, element;
+        aDate = new Date(2010, 12, 1);
+        
+        element = $compile('<input ui-date ng-model="x" ui-date-lang="y" ng-required="true"/>')($rootScope);
+        $rootScope.$apply(function() {
+          $rootScope.x = aDate;
+          $rootScope.y = 'fr';
+        });
+        
+        expect(element.hasClass('ng-valid')).toBeTruthy();
+
+        var firstMonth = $(document.body).find('span.ui-datepicker-month').first().text();
+        expect(firstMonth).toEqual('janvier');
+        
+      });
+    });
+    it('should be valid if language by default', function() {
+
+      inject(function($compile, $rootScope) {
+        var aDate, element;
+        aDate = new Date(2010, 12, 1);
+        
+        element = $compile('<input ui-date ng-model="x" ui-date-lang="y" ng-required="true"/>')($rootScope);
+        $rootScope.$apply(function() {
+          $rootScope.x = aDate;
+          $rootScope.y = 'en';
+        });
+        
+        expect(element.hasClass('ng-valid')).toBeTruthy();
+
+        var firstMonth = $(document.body).find('span.ui-datepicker-month').first().text();
+        expect(firstMonth).toEqual('January');
+        
       });
     });
     it('should be valid after the date has been picked', function() {
       inject(function($compile, $rootScope) {
         var aDate, element;
         aDate = new Date(2010, 12, 1);
-        element = $compile('<input ui-date ng-model="x" ng-required="true" />')($rootScope);
+        element = $compile('<input ui-date ng-model="x" ng-required="true" ui-date-lang="fr" />')($rootScope);
         $rootScope.$apply();
         selectDate(element, aDate);
         expect(element.hasClass('ng-valid')).toBeTruthy();

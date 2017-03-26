@@ -63,14 +63,15 @@ export default angular.module('ui.date', [])
     return {
       require: '?ngModel',
       scope : {
-        uiDateLang : '=?'
+         'uiDateLang' : '=?',
+         'uiDate' : '='
       },
       link: function link(scope, element, attrs, controller) {
 
         var $element = jQuery(element);
 
         var getOptions = function() {
-          return angular.extend({}, uiDateConfig, scope.$eval(attrs.uiDate));
+          return angular.extend({}, uiDateConfig, scope.uiDate);
         };
         var initDateWidget = function() {
           var showing = false;
@@ -200,12 +201,12 @@ export default angular.module('ui.date', [])
 
         //Update the datepicker language if lang attribute specified
         function updateLanguage(){
-
           if (scope.uiDateLang) {
             var lang = scope.uiDateLang;
-            $element.datepicker('option', $.datepicker.regional[lang]);
+            jQuery($element).datepicker('option', jQuery.datepicker.regional[lang]);
           }
         }
+
       },
     };
   }])
