@@ -10,11 +10,23 @@
   <body ng-app="MyApp">
     <!-- Date -->
     <div ng-controller='MyCtrl'>
-    <form name="myForm">
+    <form name="myForm2">
 
       <label for="date">Select Date:</label>
-      <input type="text" id="date" ui-date="dateOptions" ng-model="aDate">
+      <input type="text" id="date" ui-date="dateOptions" ui-date-lang="lang" ng-model="aDate">
 
+<br>
+Language: {{lang}}
+<br>
+    <button ng-click="setLang('fr')">Switch to language: FR</button>
+    <button ng-click="setLang('nl')">Switch to language: NL</button>
+    <button ng-click="setLang('en')">Switch to language: EN</button>
+<br>
+
+    </form>
+    <br>
+
+    <form name="myForm">
       <div>{{ aDate }}</div>
       <div>
         Read only <input type="text" ui-date ng-model="aDate" readonly>
@@ -29,6 +41,8 @@
       </div>
     </form>
 
+   
+
   </div>
     <!-- Scripts -->
     <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
@@ -37,11 +51,22 @@
     <script type="text/javascript" src="assets/date.js"></script>
     <script>
       angular.module('MyApp', ['ui.date'])
-      .controller('MyCtrl', function($scope) {
+      .controller('MyCtrl', function($scope, $rootScope) {
           $scope.aDate = '2015-10-31';
           $scope.dateOptions = {
              dateFormat: 'dd.mm.yy',
+
           }
+
+          $scope.lang = 'nl';
+
+          $scope.setLang = function(lang){
+            $scope.lang = lang;
+          }
+          //jQuery.datepicker.setLanguage("nl");
+          //$.datepicker('option', $.datepicker.regional['fr']);
+          //Trigger language change
+          //$rootScope.$broadcast('datepicker:langChanged', 'fr');
       })
     </script>
   </body>

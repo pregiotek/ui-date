@@ -104,6 +104,16 @@ Now you can set myDate in the controller.
 $scope.myDate = "Thursday, 11 October, 2012";
 ```
 
+You can also set the language of the datepicker to NL and FR.
+
+```html
+<input ui-date ui-date-lang="language" ng-model="myDate">
+```
+
+```js
+$scope.language = "fr";
+```
+
 ## ng-required directive
 
 If you apply the required directive to element then the form element is invalid until a date is picked.

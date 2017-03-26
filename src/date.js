@@ -1,6 +1,8 @@
 import jQuery from 'jquery';
 import angular from 'angular';
 import _datePicker from 'jquery-ui/datepicker'; // sets up jQuery with the datepicker plugin
+require('./i18n');
+
 
 export default angular.module('ui.date', [])
   .constant('uiDateConfig', {})
@@ -60,6 +62,9 @@ export default angular.module('ui.date', [])
 
     return {
       require: '?ngModel',
+      scope : {
+        uiDateLang : '=?'
+      },
       link: function link(scope, element, attrs, controller) {
 
         var $element = jQuery(element);
@@ -180,10 +185,27 @@ export default angular.module('ui.date', [])
             // Update the model with the value from the datepicker after parsed
             setVal(true);
           }
+          
         };
 
         // Watch for changes to the directives options
         scope.$watch(getOptions, initDateWidget, true);
+
+        //Add language support
+        scope.$watch(getLang, updateLanguage, true);
+        
+        function getLang(){
+          return scope.uiDateLang;
+        }
+
+        //Update the datepicker language if lang attribute specified
+        function updateLanguage(){
+
+          if (scope.uiDateLang) {
+            var lang = scope.uiDateLang;
+            $element.datepicker('option', $.datepicker.regional[lang]);
+          }
+        }
       },
     };
   }])
